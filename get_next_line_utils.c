@@ -1,15 +1,5 @@
 #include "get_next_line.h"
 
-// PUTSTR_FD
-
-void    putstr_fd(char *s,int fd)
-{
-    if (!s || fd < 0) // Verifica que el string no sea NULL y que el file descriptor no sea inválido
-        return ;
-    while (*s) // Escribe el string caracter por caracter
-        write(fd ,s++, 1);
-}
-
 // STRLEN
 
 size_t	ft_strlen(const char *s)

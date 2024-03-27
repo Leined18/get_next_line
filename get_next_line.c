@@ -80,7 +80,7 @@ char    *get_next_line(int fd)
         return (del(&store));
     return (res);
 }
-
+/*
 int main()
 {
 	int fd;
@@ -90,4 +90,4 @@ int main()
 	aux = get_next_line(fd);
     printf("%s", aux);
 	return (0);
-}
+}*/

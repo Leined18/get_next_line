@@ -49,6 +49,20 @@ char	*ft_strdup(const char *src)
 	return (ft_strcpy(dest, src));
 }
 
+void	*ft_calloc(size_t count, size_t size)
+{
+	char	*aux;
+	size_t	len;
+
+	len = count * size;
+	aux = malloc(len);
+	if (!aux)
+		return (0);
+	while (len--)
+		aux[len] = 0;
+	return (aux);
+}
+
 char	*ft_strjoin(char *buffer, const char *content)
 {
 	size_t	buffer_len;

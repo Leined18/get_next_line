@@ -18,6 +18,7 @@ size_t	ft_strlen(char const *str);
 char	*ft_strchr(char const *str, int c);
 char	*ft_strcpy(char *dest, char const *src);
 char	*ft_strdup(char const *src);
+void	*ft_calloc(size_t count, size_t size);
 char	*ft_strjoin(char *buffer, const char *content);
 
 #endif

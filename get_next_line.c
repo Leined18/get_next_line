@@ -1,4 +1,5 @@
 #include "get_next_line.h"
+#include "get_next_line_utils.c"
 
 static int  get_buffer(int fd,char **store)
 {
@@ -55,7 +56,7 @@ static char *get_line(char **store)
     return (free(aux), res);
 }
 
-void	*del(char **s)
+static void *del(char **s)
 {
 	free((*s));
 	(*s) = 0;
@@ -83,11 +84,21 @@ char    *get_next_line(int fd)
 /*
 int main()
 {
-	int fd;
-    char    *aux;
+	int fd1 = open("file1.txt", O_RDONLY);
+    int fd2 = open("file2.txt", O_RDONLY);
 
-	fd = open("lol.txt", O_RDONLY); // Changed O_WRONLY to O_RDONLY
-	aux = get_next_line(fd);
-    printf("%s", aux);
+    char *line;
+    while ((line = get_next_line(fd1)) != NULL)
+    {
+        printf("%s", line);
+        free(line);
+    }
+    while ((line = get_next_line(fd2)) != NULL)
+    {
+        printf("%s", line);
+        free(line);
+    }
 	return (0);
 }*/
+
+//doesn't work with two or more fd.

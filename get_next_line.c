@@ -5,7 +5,7 @@ static int  get_buffer(int fd,char **store)
 {
     char    buffer[BUFFER_SIZE + 1];
     char    *aux;
-    int     rd;
+    size_t  rd;
 
     rd = 0;
     while (rd < BUFFER_SIZE)
@@ -19,8 +19,8 @@ static int  get_buffer(int fd,char **store)
         if (!rd)
             return (0);
         buffer[rd] = 0;
-        aux = (*store);
-        (*store) = ft_strjoin((*store), buffer);
+        aux = *store;
+        *store = ft_strjoin(*store, buffer);
         free(aux);
         if (!(*store))
             return (-1);
@@ -30,14 +30,14 @@ static int  get_buffer(int fd,char **store)
 
 static char *get_line(char **store)
 {
-    size_t  len;
-    size_t  i;
-    char    *res;
-    char    *aux;
+    char *res;
+    char *aux;
+    size_t len;
+    size_t i;
 
     len = 0;
-	i = -1;
-	aux = 0;
+    i = -1;
+    res = 0;
     if (!(*store)[len])
         return (NULL);
     while ((*store)[len] && (*store)[len] != '\n')
@@ -45,14 +45,12 @@ static char *get_line(char **store)
     if ((*store)[len] == '\n')
         len++;
     res = ft_calloc(sizeof(char), len + 1);
-    if (!res)
-        return (NULL);
     while ((*store)[++i] && i < len)
         res[i] = (*store)[i];
     aux = (*store);
     (*store) = ft_strdup((*store) + len);
     if (!(*store))
-        return (free(aux), free(res), NULL);
+        return (free(res), free(aux), NULL);
     return (free(aux), res);
 }
 
@@ -65,40 +63,34 @@ static void *del(char **s)
 
 char    *get_next_line(int fd)
 {
-    static char *store;
-    char        *res;
-    int         aux;
-
+    static char    *store;
+    int     aux;
+    char    *res;
+    
     if (fd < 0 || BUFFER_SIZE < 0)
         return (NULL);
     if (!store || (*store && !ft_strchr(store, '\n')))
         aux = get_buffer(fd, &store);
     if (aux < 0 || !store)
         return (del(&store));
-    if (store && *store)
+    if (*store && store)
         res = get_line(&store);
     if (!res)
         return (del(&store));
     return (res);
 }
-/*
+
 int main()
 {
-	int fd1 = open("file1.txt", O_RDONLY);
-    int fd2 = open("file2.txt", O_RDONLY);
+	int fd1 = open("file.txt", O_RDONLY);
+    char *s;
 
-    char *line;
-    while ((line = get_next_line(fd1)) != NULL)
-    {
-        printf("%s", line);
-        free(line);
-    }
-    while ((line = get_next_line(fd2)) != NULL)
-    {
-        printf("%s", line);
-        free(line);
-    }
+    s = get_next_line(fd1);
+    printf("%s", s);
+    s = get_next_line(fd1);
+
+    printf("%s", s);
 	return (0);
-}*/
+}
 
 //doesn't work with two or more fd.

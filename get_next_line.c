@@ -6,38 +6,36 @@
 /*   By: danpalac <danpalac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 16:35:47 by danpalac          #+#    #+#             */
-/*   Updated: 2024/04/01 18:59:14 by danpalac         ###   ########.fr       */
+/*   Updated: 2024/04/01 21:47:59 by danpalac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "get_next_line.h"
+
 //#include "get_next_line_utils.c"
 
-static int	get_buffer(int fd, char **store)
+static char	get_buffer(int fd, char **store, char *buffer)
 {
-	char	buffer[BUFFER_SIZE + 1];
 	char	*aux;
 	size_t	rd;
 
-	rd = 0;
-	aux = 0;
-	while (rd < BUFFER_SIZE)
-		buffer[rd++] = 0;
 	rd = 1;
-	while (rd > 0 && !ft_strchr(buffer, '\n'))
+	while (rd > 0)
 	{
 		rd = read(fd, buffer, BUFFER_SIZE);
-		if (rd < 0)
-			return (-1);
-		if (!rd)
-			return (0);
+		if (rd == -1)
+			return (del(&store), NULL);
+		else if (rd == 0)
+			break ;
 		buffer[rd] = 0;
+		if (!*store)
+			*store = ft_strdup("");
 		aux = *store;
-		*store = ft_strjoin(*store, buffer);
+		*store = ft_strjoin(aux, buffer);
 		free(aux);
-		if (!(*store))
-			return (-1);
+		if (ft_strchr(buffer, '\n'))
+			break ;
 	}
-	return (0);
+	return (*store);
 }
 
 static char	*get_line(char **store)
@@ -76,16 +74,18 @@ static void	*del(char **s)
 char	*get_next_line(int fd)
 {
 	static char	*store;
-	int			aux;
-	char		*res;
+	char		*line;
+	char		*buffer;
 
-	res = 0;
-	aux = 0;
+	buffer = (char *)ft_calloc(sizeof(char), BUFFER_SIZE + 1);
 	if (fd < 0 || fd > MAX_FD || BUFFER_SIZE <= 0 || BUFFER_SIZE > INT_MAX)
+		return (free(buffer), buffer = NULL, del(&store));
+	if (!buffer)
 		return (NULL);
 	if (!store || (*store && !ft_strchr(store, '\n')))
-		aux = get_buffer(fd, &store);
-	if (aux < 0 || !store)
+		line = get_buffer(fd, &store, buffer);
+	free(buffer);
+	if (!line || !store)
 		return (del(&store));
 	if ((*store) && (store))
 		res = get_line(&store);
@@ -93,16 +93,16 @@ char	*get_next_line(int fd)
 		return (del(&store));
 	return (res);
 }
-/*
-int main()
-{
-	int fd1 = open("file.txt", O_RDONLY);
-	char *s;
 
-	s = get_next_line(1);
+int	main(void)
+{
+	int		fd1;
+	char	*s;
+
+	fd1 = open("file.txt", O_RDONLY);
+	s = get_next_line(fd1);
 	printf("%s", s);
 	s = get_next_line(fd1);
-
 	printf("%s", s);
 	return (0);
-}*/
+}

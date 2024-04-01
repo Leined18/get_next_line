@@ -1,5 +1,17 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: danpalac <danpalac@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/04/01 16:36:23 by danpalac          #+#    #+#             */
+/*   Updated: 2024/04/01 16:36:25 by danpalac         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "get_next_line_bonus.h"
-#include "get_next_line_utils_bonus.c"
+//#include "get_next_line_utils_bonus.c"
 
 static size_t	find_next_line_break(char *str, size_t i)
 {
@@ -91,7 +103,7 @@ char	*get_next_line(int fd)
 			store[fd] = free_null(buffer, store[fd]);
 			return (NULL);
 		}
-		buffer[rd] = 0; //0 == \0
+		buffer[rd] = 0;
 		store[fd] = ft_strjoin(store[fd], buffer);
 	}
 	free(buffer);

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_next_line_utils_bonus.c                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: danpalac <danpalac@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/04/01 16:36:50 by danpalac          #+#    #+#             */
+/*   Updated: 2024/04/01 16:36:51 by danpalac         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "get_next_line_bonus.h"
 
 size_t	ft_strlen(const char *str)
@@ -26,29 +38,6 @@ char	*ft_strchr(char const *str, int c)
 		return (NULL);
 }
 
-char	*ft_strcpy(char *dest, const char *src)
-{
-	char	*dest_start;
-
-	dest_start = dest;
-	while (*src)
-		*dest++ = *src++;
-	*dest = '\0';
-	return (dest_start);
-}
-
-char	*ft_strdup(const char *src)
-{
-	size_t	len;
-	char	*dest;
-
-	len = ft_strlen(src);
-	dest = (char *)malloc(sizeof(char) * (len + 1));
-	if (!dest)
-		return (NULL);
-	return (ft_strcpy(dest, src));
-}
-
 void	*ft_calloc(size_t count, size_t size)
 {
 	char	*aux;
@@ -63,31 +52,37 @@ void	*ft_calloc(size_t count, size_t size)
 	return (aux);
 }
 
-char	*ft_strjoin(char *buffer, const char *content)
+char	*ft_strdup(const char *s1)
 {
-	size_t	buffer_len;
-	size_t	content_len;
-	char	*result;
-	char	*result_ptr;
-	char	*src;
+	char	*res;
+	int		i;
 
-	buffer_len = 0;
-	if (!buffer && !content)
+	i = 0;
+	res = ft_calloc(sizeof(char), (ft_strlen(s1) + 1));
+	if (!res)
+		return (0);
+	while (*s1 != '\0')
+		res[i++] = (char)*s1++;
+	return (res);
+}
+
+char	*ft_strjoin(char const *s1, char const *s2)
+{
+	char	*res;
+	size_t	i;
+	size_t	x;
+
+	i = 0;
+	x = 0;
+	res = (char *)ft_calloc(sizeof(char), ft_strlen(s1) + ft_strlen(s2) + 1);
+	if (!res)
 		return (NULL);
-	if (buffer)
-		buffer_len = ft_strlen(buffer);
-	content_len = ft_strlen(content);
-	result = (char *)malloc(sizeof(char) * (buffer_len + content_len + 1));
-	if (!result)
-		return (NULL);
-	result_ptr = result;
-	src = buffer;
-	while (src && *src)
-		*result_ptr++ = *src++;
-	src = (char *)content;
-	while (src && *src)
-		*result_ptr++ = *src++;
-	*result_ptr = '\0';
-	free(buffer);
-	return (result);
+	while (s1 && s1[i])
+	{
+		res[i] = s1[i];
+		i++;
+	}
+	while (s2 && s2[x])
+		res[i++] = s2[x++];
+	return (res);
 }

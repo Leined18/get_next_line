@@ -1,34 +1,40 @@
-#include "get_next_line.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_next_line_utils.c                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: danpalac <danpalac@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/04/01 16:36:43 by danpalac          #+#    #+#             */
+/*   Updated: 2024/04/01 16:36:44 by danpalac         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-// STRLEN
+#include "get_next_line.h"
 
 size_t	ft_strlen(const char *s)
 {
 	size_t	i;
 
 	i = 0;
-	while (s && s[i] != '\0') // Cuenta la longitud del string hasta encontrar el carácter nulo
+	while (s && s[i] != '\0')
 		i++;
 	return (i);
 }
-
-//CALLOC
 
 void	*ft_calloc(size_t count, size_t size)
 {
 	char	*aux;
 	size_t	len;
 
-	len = count * size; // Calcula el tamaño total de memoria a reservar
-	aux = malloc(len); // Reserva memoria usando malloc
-	if (!aux) // Verifica si malloc falló
+	len = count * size;
+	aux = malloc(len);
+	if (!aux)
 		return (0);
-	while (len--) // Inicializa la memoria reservada a 0
+	while (len--)
 		aux[len] = 0;
 	return (aux);
 }
-
-//STRDUP
 
 char	*ft_strdup(const char *s1)
 {
@@ -36,32 +42,29 @@ char	*ft_strdup(const char *s1)
 	int		i;
 
 	i = 0;
-	str = ft_calloc(sizeof(char), (ft_strlen(s1) + 1)); // Reserva memoria y suma 1 para el carácter nulo
-	if (!str) // Verifica si ft_calloc falló
+	str = ft_calloc(sizeof(char), (ft_strlen(s1) + 1));
+	if (!str)
 		return (0);
-	while (*s1 != '\0') // Copia el string
+	while (*s1 != '\0')
 		str[i++] = (char)*s1++;
 	return (str);
 }
 
-// STRCHR
-
 char	*ft_strchr(const char *s, int c)
-{	char	*aux;
+{
+	char	*aux;
 
 	aux = (char *)s;
-	while (*aux != '\0') // Busca el carácter en el string
+	while (*aux != '\0')
 	{
 		if (*aux == (char)c)
 			return (aux);
 		aux++;
 	}
-	if (*aux == (char)c) // Verifica si el carácter es el carácter nulo
+	if (*aux == (char)c)
 		return (aux);
 	return (0);
 }
-
-// STRJOIN
 
 char	*ft_strjoin(char const *s1, char const *s2)
 {
@@ -71,15 +74,15 @@ char	*ft_strjoin(char const *s1, char const *s2)
 
 	i = 0;
 	j = 0;
-	str = (char *)ft_calloc(sizeof(char), ft_strlen(s1) + ft_strlen(s2) + 1); // Reserva memoria para la concatenación
-	if (!str) // Comprueba si ft_calloc falló
+	str = (char *)ft_calloc(sizeof(char), ft_strlen(s1) + ft_strlen(s2) + 1);
+	if (!str)
 		return (NULL);
-	while (s1 && s1[i]) // Copia el primer string
+	while (s1 && s1[i])
 	{
 		str[i] = s1[i];
 		i++;
 	}
-	while (s2 && s2[j]) // Copia el segundo string
+	while (s2 && s2[j])
 		str[i++] = s2[j++];
 	return (str);
 }

@@ -6,11 +6,11 @@
 /*   By: danpalac <danpalac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 16:35:47 by danpalac          #+#    #+#             */
-/*   Updated: 2024/04/01 16:41:55 by danpalac         ###   ########.fr       */
+/*   Updated: 2024/04/01 18:59:14 by danpalac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "get_next_line.h"
-// #include "get_next_line_utils.c"
+#include "get_next_line_utils.c"
 
 static int	get_buffer(int fd, char **store)
 {
@@ -80,7 +80,7 @@ char	*get_next_line(int fd)
 
 	res = 0;
 	aux = 0;
-	if (fd < 0 || BUFFER_SIZE < 0 || fd > MAX_FD)
+	if (fd <= 0 || BUFFER_SIZE < 0 || fd > MAX_FD)
 		return (NULL);
 	if (!store || (*store && !ft_strchr(store, '\n')))
 		aux = get_buffer(fd, &store);
@@ -92,7 +92,7 @@ char	*get_next_line(int fd)
 		return (del(&store));
 	return (res);
 }
-/*
+
 int main()
 {
 	int fd1 = open("file.txt", O_RDONLY);
@@ -104,4 +104,4 @@ int main()
 
 	printf("%s", s);
 	return (0);
-}*/
+}

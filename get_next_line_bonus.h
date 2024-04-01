@@ -6,7 +6,7 @@
 /*   By: danpalac <danpalac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 16:36:36 by danpalac          #+#    #+#             */
-/*   Updated: 2024/04/01 16:36:37 by danpalac         ###   ########.fr       */
+/*   Updated: 2024/04/01 18:39:56 by danpalac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,8 @@
 char	*get_next_line(int fd);
 size_t	ft_strlen(char const *str);
 char	*ft_strchr(char const *str, int c);
-char	*ft_strcpy(char *dest, char const *src);
 char	*ft_strdup(char const *src);
 void	*ft_calloc(size_t count, size_t size);
-char	*ft_strjoin(char *buffer, const char *content);
+char	*ft_strjoin(char const *s1, char const *s2);
 
 #endif

@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 #include "get_next_line.h"
-#include "get_next_line_utils.c"
+//#include "get_next_line_utils.c"
 
 static int	get_buffer(int fd, char **store)
 {
@@ -19,6 +19,7 @@ static int	get_buffer(int fd, char **store)
 	size_t	rd;
 
 	rd = 0;
+	aux = 0;
 	while (rd < BUFFER_SIZE)
 		buffer[rd++] = 0;
 	rd = 1;
@@ -80,7 +81,7 @@ char	*get_next_line(int fd)
 
 	res = 0;
 	aux = 0;
-	if (fd <= 0 || BUFFER_SIZE < 0 || fd > MAX_FD)
+	if (fd < 0 || fd > MAX_FD || BUFFER_SIZE <= 0 || BUFFER_SIZE > INT_MAX)
 		return (NULL);
 	if (!store || (*store && !ft_strchr(store, '\n')))
 		aux = get_buffer(fd, &store);
@@ -92,16 +93,16 @@ char	*get_next_line(int fd)
 		return (del(&store));
 	return (res);
 }
-
+/*
 int main()
 {
 	int fd1 = open("file.txt", O_RDONLY);
 	char *s;
 
-	s = get_next_line(fd1);
+	s = get_next_line(1);
 	printf("%s", s);
 	s = get_next_line(fd1);
 
 	printf("%s", s);
 	return (0);
-}
+}*/

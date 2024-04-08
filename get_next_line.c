@@ -11,7 +11,8 @@
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-#include "get_next_line_utils.c"
+
+// #include "get_next_line_utils.c"
 
 static void	*del(char **s)
 {
@@ -38,8 +39,8 @@ char	*ft_strchr(const char *s, int c)
 
 static char	*get_buffer(int fd, char *store, char *buffer)
 {
-	char	*aux;
-	size_t	rd;
+	char		*aux;
+	long int	rd;
 
 	rd = 1;
 	while (rd > 0)
@@ -87,19 +88,25 @@ char	*get_next_line(int fd)
 	char		*line;
 	char		*buffer;
 
-	buffer = (char *)ft_calloc(sizeof(char), BUFFER_SIZE + 1);
+	buffer = (char *)malloc(sizeof(char) * BUFFER_SIZE + 1);
 	if (fd < 0 || BUFFER_SIZE <= 0)
-		return (free(buffer), buffer = NULL, del(&store));
+	{
+		free(buffer);
+		buffer = NULL;
+		store = NULL;
+		return (NULL);
+	}
 	if (!buffer)
 		return (NULL);
 	line = get_buffer(fd, store, buffer);
 	free(buffer);
+	buffer = NULL;
 	if (!line)
 		return (del(&store));
 	store = get_line(line);
 	return (line);
 }
-
+/*
 int	main(void)
 {
 	int		fd1;
@@ -112,3 +119,4 @@ int	main(void)
 	printf("%s", s);
 	return (0);
 }
+*/

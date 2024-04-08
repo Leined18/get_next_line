@@ -14,13 +14,6 @@
 
 // #include "get_next_line_utils.c"
 
-static void	*del(char **s)
-{
-	free((*s));
-	(*s) = 0;
-	return (NULL);
-}
-
 char	*ft_strchr(const char *s, int c)
 {
 	char	*ptr;
@@ -47,7 +40,7 @@ static char	*get_buffer(int fd, char *store, char *buffer)
 	{
 		rd = read(fd, buffer, BUFFER_SIZE);
 		if (rd == -1)
-			return (del(&store), NULL);
+			return (free(store), NULL);
 		else if (rd == 0)
 			break ;
 		buffer[rd] = 0;
@@ -56,6 +49,7 @@ static char	*get_buffer(int fd, char *store, char *buffer)
 		aux = store;
 		store = ft_strjoin(aux, buffer);
 		free(aux);
+		aux = NULL;
 		if (ft_strchr(buffer, '\n'))
 			break ;
 	}
@@ -102,7 +96,7 @@ char	*get_next_line(int fd)
 	free(buffer);
 	buffer = NULL;
 	if (!line)
-		return (del(&store));
+		return (store = NULL, NULL);
 	store = get_line(line);
 	return (line);
 }

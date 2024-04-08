@@ -10,79 +10,111 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line_bonus.h"
+#include "get_next_line.h"
 
-size_t	ft_strlen(const char *str)
+size_t	ft_strlen(char const *str)
 {
 	size_t	i;
 
+	if (!str)
+		return (-1);
 	i = 0;
 	while (*(str + i))
 		i++;
 	return (i);
 }
 
-char	*ft_strchr(char const *str, int c)
+char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
+	char	*str;
+	char	*str_ptr;
+	size_t	i;
+
+	if (!s)
+		return (NULL);
+	if (start > ft_strlen(s))
+		len = 0;
+	else if (len > (ft_strlen(s) - start))
+		len = ft_strlen(s) - start;
+	str = (char *)malloc((len + 1) * sizeof(char));
 	if (!str)
 		return (NULL);
-	while (*str)
+	i = 0;
+	while (i < len + 1)
 	{
-		if (*str == (char)c)
-			return ((char *)str);
-		str++;
+		str[i] = 0;
+		i++;
 	}
-	if (*str == (char)c)
-		return ((char *)str);
-	else
-		return (NULL);
-}
-
-void	*ft_calloc(size_t count, size_t size)
-{
-	char	*aux;
-	size_t	len;
-
-	len = count * size;
-	aux = malloc(len);
-	if (!aux)
-		return (0);
-	while (len--)
-		aux[len] = 0;
-	return (aux);
+	s += start;
+	str_ptr = str;
+	*(str + len) = '\0';
+	while (len-- && *s)
+		*str++ = *s++;
+	return (str_ptr);
 }
 
 char	*ft_strdup(const char *s1)
 {
-	char	*res;
-	int		i;
+	char	*dup;
+	char	*temp_dup;
 
-	i = 0;
-	res = ft_calloc(sizeof(char), (ft_strlen(s1) + 1));
-	if (!res)
-		return (0);
-	while (*s1 != '\0')
-		res[i++] = (char)*s1++;
-	return (res);
+	if (!s1)
+		return (NULL);
+	dup = (char *)malloc(strlen(s1) + 1);
+	if (!dup)
+		return (NULL);
+	temp_dup = dup;
+	while (*s1)
+	{
+		*temp_dup++ = *s1++;
+	}
+	*temp_dup = '\0';
+	return (dup);
 }
 
 char	*ft_strjoin(char const *s1, char const *s2)
 {
-	char	*res;
-	size_t	i;
-	size_t	x;
+	char	*join;
+	char	*start_join;
+	int		len_s1;
+	int		len_s2;
+	int		total_len;
 
-	i = 0;
-	x = 0;
-	res = (char *)ft_calloc(sizeof(char), ft_strlen(s1) + ft_strlen(s2) + 1);
-	if (!res)
+	if (!s1 || !s2)
 		return (NULL);
-	while (s1 && s1[i])
+	len_s1 = 0;
+	while (s1[len_s1])
+		len_s1++;
+	len_s2 = 0;
+	while (s2[len_s2])
+		len_s2++;
+	total_len = len_s1 + len_s2;
+	join = (char *)malloc((total_len + 1) * sizeof(char));
+	if (!join)
+		return (NULL);
+	start_join = join;
+	while (*s1)
+		*join++ = *s1++;
+	while (*s2)
+		*join++ = *s2++;
+	*join = '\0';
+	return (start_join);
+}
+
+char	*ft_strchr(char *str, int c)
+{
+	unsigned char	b;
+	int				i;
+
+	b = (unsigned char)c;
+	i = 0;
+	while (str[i] != '\0')
 	{
-		res[i] = s1[i];
+		if ((unsigned char)str[i] == b)
+			return ((char *)&str[i]);
 		i++;
 	}
-	while (s2 && s2[x])
-		res[i++] = s2[x++];
-	return (res);
+	if (b == '\0')
+		return ((char *)&str[i]);
+	return (NULL);
 }

@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 size_t	ft_strlen(char const *str)
 {
@@ -30,7 +30,7 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	char	*str_ptr;
 	size_t	i;
 
-	if (!s)
+	if (!s || !start)
 		return (NULL);
 	if (start > ft_strlen(s))
 		len = 0;
@@ -58,8 +58,8 @@ char	*ft_strdup(const char *s1)
 	char	*dup;
 	char	*temp_dup;
 
-	if (!s1)
-		return (NULL);
+	temp_dup = 0;
+	dup = 0;
 	dup = (char *)malloc(strlen(s1) + 1);
 	if (!dup)
 		return (NULL);

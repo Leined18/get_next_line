@@ -12,7 +12,7 @@
 
 #include "get_next_line.h"
 
-// #include "get_next_line_utils.c"
+//#include "get_next_line_utils.c"
 
 char	*ft_strchr(const char *s, int c)
 {
@@ -36,6 +36,8 @@ static char	*get_buffer(int fd, char *store, char *buffer)
 	long int	rd;
 
 	rd = 1;
+	if (fd < 0 || !buffer)
+		return (NULL);
 	while (rd > 0)
 	{
 		rd = read(fd, buffer, BUFFER_SIZE);
@@ -62,6 +64,8 @@ static char	*get_line(char *line_buffer)
 	size_t	i;
 
 	i = 0;
+	if (!line_buffer)
+		return (NULL);
 	while (line_buffer[i] != '\n' && line_buffer[i] != '\0')
 		i++;
 	if (line_buffer[i] == 0 || line_buffer[1] == 0)
@@ -82,7 +86,7 @@ char	*get_next_line(int fd)
 	char		*line;
 	char		*buffer;
 
-	buffer = (char *)malloc(sizeof(char) * BUFFER_SIZE + 1);
+	buffer = malloc(sizeof(char) * (BUFFER_SIZE + 1));
 	if (fd < 0 || BUFFER_SIZE <= 0)
 	{
 		free(buffer);
@@ -103,14 +107,15 @@ char	*get_next_line(int fd)
 /*
 int	main(void)
 {
-	int		fd1;
-	char	*s;
+	int fd1;
+	char *s;
 
 	fd1 = open("file.txt", O_RDONLY);
-	s = get_next_line(fd1);
-	printf("%s", s);
-	s = get_next_line(fd1);
-	printf("%s", s);
+	for (int i = 0; i < 3; i++)
+	{
+		s = get_next_line(1);
+		printf("%s", s);
+	}
+
 	return (0);
-}
-*/
+}*/

@@ -55,7 +55,7 @@ char	*ft_strdup(const char *s1)
 		return (NULL);
 	temp_dup = 0;
 	dup = 0;
-	dup = (char *)malloc(strlen(s1) + 1);
+	dup = (char *)malloc(ft_strlen(s1) + 1);
 	if (!dup)
 		return (NULL);
 	temp_dup = dup;

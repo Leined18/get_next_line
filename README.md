@@ -1,23 +1,27 @@
-# Get Next Line
 
-## Description
-`get_next_line` is a C function designed to read and return the next line from a text file each time it's called. This function is useful when you need to process a file line by line, such as reading text files, logs, or any other file where lines are meaningful units of information.
+## Get Next Line
+
+### Description
+**get_next_line** is a C function designed to read and return the next line from a file each time it is called. It is useful for processing files line by line, such as reading text files, logs, or any file where lines represent meaningful units of data.
+
+---
 
 ## Usage
-### Prototype
 
-    int get_next_line(int fd, char **line);
+### Prototype:
+```c
+int get_next_line(int fd, char **line);
+```
 
-fd: The file descriptor of the file to be read.
-line: The address of a pointer to an area of memory where the read line from the file will be stored.
+- **fd**: The file descriptor of the file to be read.
+- **line**: A pointer to a memory area where the function will store the next read line.
 
-Return
+### Return Values:
+- **1**: A line has been successfully read.
+- **0**: End of file (EOF) has been reached.
+- **-1**: An error occurred (e.g., invalid file descriptor or memory allocation error).
 
-    Returns 1 if a line was successfully read.
-    Returns 0 when the end of the file is reached.
-    Returns -1 in case of an error.
-
-Example Usage
+### Example:
 ```c
 #include "get_next_line.h"
 
@@ -38,16 +42,39 @@ int main(void) {
     return (0);
 }
 ```
-# Operation
+This example opens a file, reads it line by line, prints each line, and frees the allocated memory before closing the file descriptor.
 
-    File Reading: The get_next_line function reads the content of the file referenced by fd in fixed-size blocks using the read function and stores the result in an internal buffer.
-    Line Search: It searches for a line terminated by a newline ('\n') character in the internal buffer.
-    Line Return: When a line is found, it copies it into the pointer line passed as an argument and advances the internal file cursor to the end of the line.
-    Handling Multiple Calls: If the function is called repeatedly, it continues reading the file from where it left off last time and returns the next line. Each call maintains its own internal state, allowing multiple files to be read concurrently without interference.
+---
 
-# Compilation
+## How It Works
 
-    gcc -Wall -Wextra -Werror -D BUFFER_SIZE=xx file.c get_next_line.c get_next_line_utils.c -o program
+### 1. File Reading:
+`get_next_line` reads the file referenced by `fd` in fixed-size blocks using the `read` function. The size of each block is defined by the **BUFFER_SIZE** macro. It stores the data read in an internal buffer.
 
-Make sure to replace xx with the desired buffer size.
-Authors
+### 2. Line Search:
+The function searches the internal buffer for a newline character (`\n`), which indicates the end of a line.
+
+### 3. Line Return:
+When a newline is found, the function copies the line (including any characters up to but not including `\n`) into the pointer `line` passed as an argument. It then updates the internal file cursor to begin reading from the next character.
+
+### 4. Multiple Calls:
+Successive calls to `get_next_line` continue reading from where the last call left off. The function maintains an internal state, allowing for multiple lines to be processed without needing to reopen the file. It also supports reading from multiple files concurrently by keeping independent states for each file descriptor.
+
+---
+
+## Compilation
+
+To compile your program with **get_next_line**, use the following command:
+
+```bash
+gcc -Wall -Wextra -Werror -D BUFFER_SIZE=xx file.c get_next_line.c get_next_line_utils.c -o program
+```
+
+- Replace **xx** with your desired buffer size, which controls how much data is read at a time from the file.
+- Include `get_next_line.h` in your program to use the function.
+
+---
+
+## Notes:
+- Choose an appropriate **BUFFER_SIZE** depending on the size of the file you are processing. A larger buffer size can lead to fewer system calls but might use more memory.
+- Make sure to handle memory allocation properly by freeing the lines returned by `get_next_line` after use.
